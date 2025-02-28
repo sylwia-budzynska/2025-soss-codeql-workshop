@@ -1,11 +1,39 @@
 {
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-  "extensions": [
-    "github.vscode-codeql",
-    "slevesque.vscode-zipexplorer"
-  ],
+  "customizations": {
+    "codespaces": {
+      "extensions": [
+        "github.vscode-codeql",
+        "slevesque.vscode-zipexplorer",
+        "burkeholland.simple-timer"
+      ],
+      "settings": {
+        "codeQL.runningQueries.memory": 4096,
+        "codeQL.runningQueries.autoSave": true,
+        "CodeQL.canary.enabled": true
+      },
+      "openFiles": [
+        "vscode-codeql-starter.code-workspace",
+        "README.md"
+      ]
+    },
+    "vscode": {
+      "extensions": [
+        "github.vscode-codeql",
+        "slevesque.vscode-zipexplorer",
+        "burkeholland.simple-timer"
+      ],
+      "settings": {
+        "codeQL.runningQueries.memory": 4096,
+        "CodeQL.canary.enabled": true
+      },
+      "openFiles": [
+        "vscode-codeql-starter.code-workspace",
+        "README.md"
+      ]
+    }
+  },
   "postCreateCommand": "git submodule init && git submodule update --recursive",
-  "settings": {
-    "codeQL.runningQueries.memory": 2048
+  "hostRequirements": {
+    "memory": "16gb"
   }
  }
