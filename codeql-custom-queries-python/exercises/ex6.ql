@@ -1,7 +1,7 @@
 /**
  * @name Command injection in os.system sink
  * @kind path-problem
- * @id codergirls/dataflow-query
+ * @id codeql-ws/dataflow-query
  */
 
  import python

@@ -1,5 +1,5 @@
 <h1 align="center">Finding vulnerabilities with CodeQL</h1>
-<h3 align="center">CoderGirls Aarhus 2025</h3>
+<h3 align="center">Secure Open Source Fund 2025</h3>
 
 <p align="center">
   <a href="#mega-prerequisites">Prerequisites</a> •
@@ -32,7 +32,7 @@ Note: The first 120 hours per core of Codespace usage are free per month, we use
 #### Instructions
 
 1. Login to your [GitHub](https://github.com/login) account
-2. Go to the repo https://github.com/sylwia-budzynska/2025-codergirls-codeql-workshop / (short link: https://gh.io/codergirls-codeql)
+2. Go to the repo https://github.com/sylwia-budzynska/2025-soss-codeql-workshop / (short link: https://gh.io/soss-codeql)
 3. Click on Code -> Codespaces
 4. Click on the plus sign (+) to create a new codespace.
 
@@ -63,8 +63,8 @@ Use a local CodeQL installation to work on the workshop exercises.
 1. Install [VS Code extension for CodeQL](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-codeql)
 2. Run in the terminal:
 ```bash
-git clone https://github.com/sylwia-budzynska/2025-codergirls-codeql-workshop.git
-cd 2025-codergirls-codeql-workshop
+git clone https://github.com/sylwia-budzynska/2025-soss-codeql-workshop
+cd 2025-soss-codeql-workshop
 git submodule init
 git submodule update --recursive
 ```
@@ -395,7 +395,7 @@ Before you start with the next exercise:
 /**
  * @name Command injection in os.system sink
  * @kind path-problem
- * @id codergirls/dataflow-query
+ * @id codeql-ws/dataflow-query
  */
 
 import python
@@ -435,7 +435,7 @@ select sink.getNode(), source, sink, "Command injection"
 /**
  * @name Command injection in os.system sink
  * @kind path-problem
- * @id codergirls/dataflow-query
+ * @id codeql-ws/dataflow-query
  */
 
 import python
