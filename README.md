@@ -128,7 +128,7 @@ This session will introduce fundamentals of security research and static analysi
 Before we get started it is important that all of the prerequisites are met so you can participate in the workshop.
 
 The workshop is divided into multiple sections and each section consists of exercises that build up to the final query.
-For each section we provide *hints* that help you finish the exercise by providing you with references to QL classes and member predicates that you can use.
+For each section we provide *guidelines* that help you finish the exercise by providing you with references to QL classes and member predicates that you can use.
 
 ### Overview
 
@@ -152,6 +152,76 @@ For a vulnerability to be present, the unsafe, user-controlled input has to be u
 
 <img src="images/source-sink-cmdi.png">
 
+### CodeQL cheatsheet
+The basic query structure
+```codeql
+import python
+
+from <type> <name> 		//variables used in the query
+
+where <conditions for variables>		
+
+select <output>			//results, referring to the variables
+```
+
+Find references to `os.system()` calls
+
+```codeql
+import python
+import semmle.python.ApiGraphs
+
+from  API::CallNode call
+where call = API::moduleImport("os")
+  .getMember("system")
+  .getACall()
+select call, "Call to os.system"
+```
+
+Find references to `os.system()` calls, this time with a predicate
+
+```codeql
+predicate isOsSystemSink(API::CallNode call) {
+	call = API::moduleImport("os")
+  .getMember("system").getACall()
+  }
+
+
+from API::CallNode call
+where isOsSystemSink(call)
+select call, "Call to os.system"
+```
+
+Find references to `os.system()` calls, this time with a class
+
+```codeql
+class OsSystemSink extends API::CallNode {
+  OsSystemSink() {
+    this = API::moduleImport("os")
+    .getMember("system").getACall()
+	}
+}
+
+
+from API::CallNode call
+where call instanceof OsSystemSink
+select call, "Call to os.system"
+```
+
+Find references to `os.system()` calls, this time with a class
+Specify that the type we are starting with is `OsSystemSink`
+
+```codeql
+class OsSystemSink extends API::CallNode {
+  OsSystemSink() {
+    this = API::moduleImport("os")
+    .getMember("system").getACall()
+	}
+}
+
+
+from OsSystemSink s
+select s, "Call to os.system"
+```
 
 ## Workshop part I - test database
 
@@ -192,7 +262,7 @@ select 	//TODO: fill me in
 Right click in the file area and choose "CodeQL: Run Query on Selected Database" to run the query.
 
 <details>
-<summary>Hints</summary>
+<summary>Guidelines</summary>
 
 - In the `from` clause, start by `API::` and press `Ctrl + Space` to see the types available in the API Graphs module.
 - A call is represented by the `API::CallNode` type. Create a variable with that type and the name `call`.
@@ -216,7 +286,7 @@ select call, "A call"
 ### 2. Find all calls to `os.system`
 
 <details>
-<summary>Hints</summary>
+<summary>Guidelines</summary>
 
 - In the `from` clause, create a `call` variable of the `API::CallNode` type.
 - In the `where` clause, use the equality operator `=` to assert that `call` is equal to the `os.system` calls. Use the logical operator `and` to specify several conditions.
@@ -254,7 +324,7 @@ select call, "Call to `os.system`"
 We want to find the first arguments to `os.system` calls, so later we can see if any user input flows into the first arguments (so into the command that will be executed).
 
 <details>
-<summary>Hints</summary>
+<summary>Guidelines</summary>
 
 - Fill out the template:
 ```codeql
@@ -288,7 +358,7 @@ select call.getArg(0), "First argument of an `os.system` call"
 `classes` in CodeQL can be used to encapsulate reusable portions of logic. Classes represent single sets of values, and they can also include operations (known as member predicates) specific to that set of values. You have already seen numerous instances of CodeQL classes (API::CallNode) and  member predicates (getLocation() etc.)
 
 <details>
-<summary>Hints</summary>
+<summary>Guidelines</summary>
 
  - To create a new type, we have to extend a supertype, here `API::CallNode`, give it a name, and a _characteristic predicate_ with the same name. We'll name our class, `OsSystemSink`.
 
@@ -341,7 +411,7 @@ Now we switch to finding sources.
 Most sources are already modeled and in CodeQL, and have the `RemoteFlowSource` type. We can use the type to find any sources in a codebase.
 
 <details>
-<summary>Hints</summary>
+<summary>Guidelines</summary>
 
 - Import `semmle.python.dataflow.new.RemoteFlowSources` to use the RemoteFlowSource type.
 - In the `from` clause, press `Ctrl + Space` to see all available types.
@@ -384,7 +454,7 @@ Before you start with the next exercise:
 ### 6. Find data flows from sources to the first argument to `os.system` calls
 
 <details>
-<summary>Hints</summary>
+<summary>Guidelines</summary>
 
 - Use the template below and note:
 - in the `isSource` predicate, refine the `source` variable to be of the `RemoteFlowSource` type.
