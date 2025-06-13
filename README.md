@@ -182,7 +182,7 @@ Find references to `os.system()` calls, this time with a predicate
 ```codeql
 predicate isOsSystemSink(API::CallNode call) {
 	call = API::moduleImport("os")
-  .getMember("system").getACall()
+	.getMember("system").getACall()
   }
 
 
