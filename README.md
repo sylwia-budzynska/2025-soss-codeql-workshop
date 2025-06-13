@@ -207,7 +207,7 @@ where call instanceof OsSystemSink
 select call, "Call to os.system"
 ```
 
-Find references to `os.system()` calls, this time with a class
+Find references to `os.system()` calls, this time with a class.
 Specify that the type we are starting with is `OsSystemSink`
 
 ```codeql
