@@ -159,7 +159,7 @@ import python
 
 from <type> <name> 		//variables used in the query
 
-where <conditions for variables>		
+where <conditions for variables>
 
 select <output>			//results, referring to the variables
 ```
@@ -231,7 +231,32 @@ In the first part of the workshop, we will write CodeQL queries to find sources 
 
 With the CodeQL query we write, we will be able to find command injections like the one below.
 
-The user input comes from a GET parameter of a Flask (popular web framework in Python) request, which is stored in the variable `files` (see #1). `files` is then passed to the `os.system` call and concatenated with `ls`, leading to command injection (see #2).
+The user input comes from an interactive Gradio (web framework for machine learning applications) component `gr.Textbox` at #1. `gr.Button.click` at #2 binds the button click to the execute_cmd function, passing in the values from `folder`. That means when the `gr.Button` is clicked `folder` is pased to `execute_cmd`, where `folder` is concatenated into a command, and executed on the system in an `os.system` call at #3.
+
+```python
+import gradio as gr
+import os
+
+def execute_cmd(folder):
+    cmd = f"python caption.py --dir={folder}"
+    os.system(cmd) #3
+
+
+with gr.Blocks() as demo:
+    gr.Markdown("Create caption files for images in a directory")
+    with gr.Row():
+        folder = gr.Textbox(placeholder="Directory to caption") #1
+        logs = gr.Checkbox(label="Add verbose logs")
+
+    btn = gr.Button("Run")
+    btn.click(fn=execute_cmd, inputs=[folder]) #2
+
+
+if __name__ == "__main__":
+    demo.launch(debug=True)
+```
+
+You'll also notice another command injection example in the workshop, in an app created using the `Flask` framework. In this case, the user input comes from a GET parameter of a Flask (popular web framework in Python) request, which is stored in the variable `files` (see #1). `files` is then passed to the `os.system` call and concatenated with `ls`, leading to command injection (see #2).
 
 ```python
 import os
