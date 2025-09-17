@@ -276,7 +276,7 @@ We will start by gradually building a query to detect `os.system` calls and afte
 
 We can find all calls to functions from external libraries (not defined in the codebase) by using CodeQL's `ApiGraphs` module.
 
-Use the tempalate below:
+Use the template below:
 ```codeql
 import python
 import semmle.python.ApiGraphs
