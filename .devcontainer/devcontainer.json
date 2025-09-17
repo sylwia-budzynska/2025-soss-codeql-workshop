@@ -32,7 +32,7 @@
       ]
     }
   },
-  "postCreateCommand": "git submodule update --init --remote",
+  "postCreateCommand": "git submodule init && git submodule update --recursive",
   "hostRequirements": {
     "memory": "16gb"
   }
