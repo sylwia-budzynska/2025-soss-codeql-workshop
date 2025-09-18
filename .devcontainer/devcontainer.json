@@ -30,10 +30,15 @@
         "vscode-codeql-starter.code-workspace",
         "README.md"
       ]
+    },
+    "features": {
+      "ghcr.io/devcontainers/features/git-lfs": {
+        "autoPull": false
+      }
     }
   },
-  "postCreateCommand": "git submodule init && git submodule update --recursive",
+  "postCreateCommand": "git submodule init && git submodule update --recursive --depth 1",
   "hostRequirements": {
     "memory": "16gb"
   }
- }
+}
